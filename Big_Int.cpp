@@ -82,104 +82,98 @@ string multiply(string num1, string num2)
 	return s; 
 } 
 
+// Comparing two nums
+
+int comp(string a, string b){
+    long long len1 = a.size();
+    long long len2 = b.size();
+    if(len1>len2)
+        return 1;
+    else if(len2>len1)
+        return -1;
+    else{
+        for(long long i=0;i<len1;i++){
+            int ai = a[i] -'0';
+            int bi = b[i] - '0';
+            if(ai>bi)
+                return 1;
+            else if(ai<bi)
+                return -1;
+        }
+        return 0;
+    }
+}
+
+
+
 
 //ADDITION
 
-string add(string num1,string num2){
+string add(string n1,string n2){
     
-    int flag = 0;
     string s = ""; 
     
-    //both have same sign
+    string num1 = n1;
+    string num2 = n2;
     
-    if((num1.at(0) != '-' && num2.at(0) != '-') || (num1.at(0) == '-' && num2.at(0) == '-')){ 
-        if(num1.at(0) == '-' && num2.at(0) == '-'){
-	        flag = 1;
-		    num1 = num1.substr(1);                    
-		    num2 = num2.substr(1); 
-        }
+    if((n1.compare(n2))<0){
+        num1 = n2;
+        num2 = n1;
+    }
 
-	    int len1 = num1.size(); 
-	    int len2 = num2.size(); 
-	    if (len1 == 0 && len2 == 0) 
-	        return "0"; 
+	int len1 = num1.size(); 
+	int len2 = num2.size(); 
+	    
+	if (len1 == 0 && len2 == 0) 
+	   return "0"; 
 	
-	    int size = max(len1,len2) + 1;
+	int size = max(len1,len2) + 1;
+	    
 	
-	    int result[size]; 
-	    for(int i=0;i<size;i++)
-		    result[i] = 0;
+	int result[size]; 
+	for(int i=0;i<size;i++)
+	    result[i] = 0;
 		
-	    if(len1>len2){
-	        int carry = 0;
-	        for(int i=1;i<=len2;i++){
-	            int sum = num2[len2-i] - '0' + num1[len1-i] - '0' + carry;
-	            carry = sum/10;
-	            result[size-i]=sum%10;
-	        }
-	        for(int i=len2+1;i<=len1;i++){
-    	        int sum = num1[len1-i] - '0' + carry;
-	            carry = sum/10;
-    	        result[size-i]=sum%10;
-	        }
-	        if(carry>0)
-    	        result[0]=carry;
+	if(len1>len2){
+	    int carry = 0;
+	    for(int i=1;i<=len2;i++){
+	       int sum = num2[len2-i] - '0' + num1[len1-i] - '0' + carry;
+	       carry = sum/10;
+	       result[size-i]=sum%10;
 	    }
-        else if(len1<len2){
-	        int carry = 0;
-	        for(int i=1;i<=len1;i++){
-	            int sum = num2[len2-i] - '0' + num1[len1-i] - '0' + carry;
-	            carry = sum/10;
-	            result[size-i]=sum%10;
-	        }
-	        for(int i=len1+1;i<=len2;i++){
-    	        int sum = num1[len2-i] - '0' + carry;
-	            carry = sum/10;
-	            result[size-i]=sum%10;
-	        }
-	        if(carry>0)
-	            result[0]=carry;
+	    for(int i=len2+1;i<=len1;i++){
+    	   int sum = num1[len1-i] - '0' + carry;
+	       carry = sum/10;
+    	   result[size-i]=sum%10;
 	    }
-	    else{
-	        int carry = 0;
-	        for(int i=1;i<=len1;i++){
-    	        int sum = num2[len2-i] - '0' + num1[len1-i] -'0' + carry;
-	            carry = sum/10;
-	            result[size-i]=sum%10;
-	        }
-	        if(carry>0)
-    	        result[0]=carry;
+	    if(carry>0)
+    	  result[0]=carry;
+	 }
+	 else{
+	    int carry = 0;
+	    for(int i=1;i<=len1;i++){
+            int sum = num2[len2-i] - '0' + num1[len1-i] -'0' + carry;
+	        carry = sum/10;
+	        result[size-i]=sum%10;
 	    }
-	    
-	    int i = 0; 
-	    while (i<size && result[i] == 0) 
-	        i++; 
-
-
-	    if(flag==1){
-		    s += "-";
-	    }   
-	
-	    while (i<size) 
-		    s += std::to_string(result[i++]);
-	
-	
+	    if(carry>0)
+    	   result[0]=carry;
 	}
-	
-	//both have different  sign
-	
-	else if((num1.at(0) == '-' || num2.at(0) == '-') && (num1.at(0) != '-' || num2.at(0) != '-' )) {
 	    
-	    int sign = 0;
-	    
-	    if(num1.at(0) == '-' && num2.at(0)!='-'){
-		    num1 = num1.substr(1); 
-		    sign = 1;
-	    } 
-	    else if(num1.at(0) != '-' && num2.at(0) == '-'){
-		    num2 = num2.substr(1); 
-		    sign = 2;
-	    }
+	int i = 0; 
+	while (i<size && result[i] == 0) 
+	      i++; 
+	
+	while (i<size) 
+	s += std::to_string(result[i++]);
+	return s; 
+}
+
+//SUBRACTION
+	
+string subtract(string num1,string num2){
+	
+	    string s;
 	    
 	    int len1 = num1.size();
 	    int len2 = num2.size();
@@ -188,13 +182,10 @@ string add(string num1,string num2){
 	    if (len1 == 0 && len2 == 0) 
 	        return "0"; 
 	    
-	    if(((num1.compare(num2))<0 && sign==2) || ((num1.compare(num2))>0 && sign==1))
-	        flag = 1;
-	    else if((num1.compare(num2)) == 0) 
-	        return 0;
+	    else if(num1.compare(num2) == 0) 
+	        return "0";
 	    
 	    int size = max(len1,len2);
-	
 	
 	    int result[size]; 
 	    for(int i=0;i<size;i++)
@@ -206,6 +197,7 @@ string add(string num1,string num2){
 	           if(num1[len1-i]>num2[len2-i]){
 	               int diff = num1[len1-i] - num2[len2-i] - borrow;
 	               result[size-i]= diff % 10;
+	               borrow = 0;
 	           }
 	           else if(num1[len1-i]<num2[len2-i]){
 	               int diff = num1[len1-i] + 10 - num2[len2-i] - borrow;
@@ -243,6 +235,7 @@ string add(string num1,string num2){
 	           if(num2[len2-i]>num1[len1-i]){
 	               int diff = num2[len2-i] - num1[len1-i] - borrow;
 	               result[size-i]= diff % 10;
+	               borrow = 0;
 	           }
 	           else if(num2[len2-i]<num1[len1-i]){
 	               int diff = num2[len2-i] + 10 - num1[len1-i] - borrow;
@@ -263,6 +256,7 @@ string add(string num1,string num2){
 	        for(int i=len1+1;i<=len2;i++){
 	            if(num2[len2-i] == '0'){
 	                int diff = num2[len2-i] + 10 - '0' - borrow;
+	                result[size-i] = diff%10;
 	                borrow = 1;
 	            }
 	            else{
@@ -331,15 +325,11 @@ string add(string num1,string num2){
 	    while (i<size && result[i] == 0) 
 	        i++; 
 
-	    if(flag==1){
-		    s += "-";
-	    }   
 	
 	    while (i<size) 
 		    s += std::to_string(result[i++]);
-	}
-	
-	return s; 
+		    
+	return s;  
 }
 
 
@@ -375,11 +365,120 @@ string fast_expo(string a,long long b){
 }
 
 
+//DIVISION
+
+string divideByTwo(string number) 
+{ 
+    
+    string ans=""; 
+  
+    
+    int index = 0; 
+    int temp = number[index] - '0'; 
+    if(temp < 2) {
+        temp = temp * 10 + (number[++index] - '0'); 
+    }
+
+    while (number.size() > index) { 
+        ans += (temp>>1) + '0'; 
+        temp = (temp % 2) * 10 + number[++index] - '0'; 
+    } 
+  
+    if (ans.length() == 0) 
+        return "0"; 
+  
+    return ans; 
+} 
+
+
+
+bool isEven(string a){
+    int len = a.size();
+    int last;
+    if(len)
+        last = a[len-1] - '0';
+    if(last%2 == 0)
+        return 1;
+    else
+        return 0;
+}  
+
+//GCD
+
+string gcd(string num1, string num2){
+    
+    string a=num1;
+    string b=num2;
+    
+    if(comp(a,b)==-1){
+        a = num2;
+        b = num1;
+    }
+    
+    if(a=="0" && b=="0")
+        return 0;
+    else if(a=="0")
+        return b;
+    else if(b=="0")
+        return a;
+        
+    long long k=0;
+    string result;
+    
+    while(comp(a,"0")==1){
+        while((isEven(a)==1) && (isEven(b)==1)){
+            k += 1;
+            a = divideByTwo(a);
+            b = divideByTwo(b);
+        }
+        if(isEven(a)==1)
+            a = divideByTwo(a);
+        if(isEven(b)==1)
+            b = divideByTwo(b);
+            
+        else if((isEven(a)==0) && (isEven(b)==0)){
+            string temp = subtract(a,b);
+            if(comp(b,a)==1)
+                b=a;
+            a = divideByTwo(temp);
+            
+        }
+    }
+    
+    string inter = fast_expo("2",k);
+    result = multiply(inter,b);
+    return result;
+}   
+ 
+
 //Driver Code
 int main() 
 { 
-	
-	cout << fast_expo("999",999);
+	int Q;
+	cin>>Q;
+	while(Q--){
+		int q_no;
+		cin>> q_no;
+		if(q_no == 1){
+			string A;
+			long long B;
+			cin>>A;
+			cin>>B;
+			cout<<fast_expo(A,B)<<endl;
+		}
+		else if(q_no == 2){
+			string A;
+			string B;
+			cin>>A;
+			cin>>B;
+			cout<<gcd(A,B)<<endl;
+		}
+		else if(q_no == 3){
+			int A;
+			cin>>A;
+			cout<<factorial(A)<<endl;
+		}
+	}
 	
 	return 0; 
 } 
